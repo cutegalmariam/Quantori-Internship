@@ -1,5 +1,6 @@
 package columns;
-
+//import javax.swing.JTabbedPane.ModelListener;
+import columns.ModelListenerDupe;
 import java.applet.Applet;
 import java.awt.Color;
 import java.awt.Event;
@@ -8,7 +9,7 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
 
-public class Columns extends Applet implements ModelListener {
+public class Columns extends Applet implements ModelListenerDupe {
 
 	static final int TimeShift = 250;
 	static final int MinTimeShift = 200;
