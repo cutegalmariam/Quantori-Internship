@@ -1,5 +1,3 @@
-package lesson240718;
-
 public final class IvoryTower {
 	
 	static {

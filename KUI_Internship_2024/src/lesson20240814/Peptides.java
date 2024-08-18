@@ -1,5 +1,3 @@
-package lesson20240814;
-
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
@@ -36,15 +34,15 @@ public class Peptides {
 		}
 	}
 
-	public List<Integer> search(String peptide) {
-		return kmers.getOrDefault(peptide, List.of());
-	}
+//	public List<Integer> search(String peptide) {
+//		return kmers.getOrDefault(peptide, List.of());
+//	}
 
 	public Map<String, List<Integer>> searchLibrary() {
 		LinkedHashMap<String, List<Integer>> existingPeptides = new LinkedHashMap<String, List<Integer>>();
 		for (String peptide : library) {
 			List<Integer> positions = kmers.get(peptide);
-			if (null == positions) 
+			if (null == positions)
 				continue;
 			existingPeptides.put(peptide, positions);
 		}
