@@ -1,5 +1,3 @@
-package lesson240718;
-
 public class DecoratorExample {
 	public static void main(String[] args) {
 		Troll simple = new SimpleTroll();
