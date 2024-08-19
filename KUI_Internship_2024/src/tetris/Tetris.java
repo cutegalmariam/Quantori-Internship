@@ -54,14 +54,18 @@ public class Tetris {
 			@Override
 			public void keyPressed(KeyEvent e) {
 				switch (e.getKeyCode()) {
-				case KeyEvent.VK_LEFT: {
-					controller.moveLeft();
-					break;
-				}
-				case KeyEvent.VK_RIGHT: {
-					controller.moveRight();
-					break;
-				}
+					case KeyEvent.VK_LEFT: {
+						controller.moveLeft();
+						break;
+					}
+					case KeyEvent.VK_RIGHT: {
+						controller.moveRight();
+						break;
+					}
+					case KeyEvent.VK_UP:{
+						controller.rotate();
+						break;
+					}
 				}
 			}
 		});

@@ -84,13 +84,15 @@ public class TetrisModel implements GameEventsListener {
 
 	@Override
 	public void rotate() {
-		int[][] f = new int[4][4];
-		for (int r = 0; r < state.figure.length; r++) {
-			for (int c = 0; c < state.figure[r].length; c++) {
-				f[c][3 - r] = state.figure[r][c];
+
+		int n = state.figure.length;
+		int[][] rotatedFigure = new int[n][n];
+		for (int i = 0; i < n; i++) {
+			for (int j = 0; j < n; j++) {
+				rotatedFigure[j][n - 1 - i] = state.figure[i][j];
 			}
 		}
-		state.figure = f;
+		state.figure = rotatedFigure;
 		notifyListeners();
 	}
 
