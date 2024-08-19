@@ -98,7 +98,11 @@ public class TetrisModel implements GameEventsListener {
 
 	@Override
 	public void drop() {
-		// TODO Auto-generated method stub
+		var newPosition = new Pair(state.position.x(), state.position.y() + 1);
+		if (isNewFiguresPositionValid(newPosition)) {
+			state.position = newPosition;
+			notifyListeners();
+		}
 
 		notifyListeners();
 	}

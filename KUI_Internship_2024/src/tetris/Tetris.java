@@ -66,6 +66,10 @@ public class Tetris {
 						controller.rotate();
 						break;
 					}
+					case KeyEvent.VK_DOWN:{
+						controller.drop();
+						break;
+					}
 				}
 			}
 		});
