@@ -2,6 +2,7 @@ package tetris;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.function.BiConsumer;
 
 public class TetrisModel implements GameEventsListener {
@@ -104,22 +105,20 @@ public class TetrisModel implements GameEventsListener {
 			notifyListeners();
 		}
 
-		notifyListeners();
 	}
 
 	public boolean isNewFiguresPositionValid(Pair newPosition) {
-
-		boolean[] result = new boolean[1];
-		result[0] = true;
+		AtomicBoolean result = new AtomicBoolean(true);
 
 		walkThroughAllFigureCells(newPosition, (absPos, relPos) -> {
-			if (result[0]) {
-				result[0] = checkAbsPos(absPos);
+			if (result.get()) {
+				result.set(checkAbsPos(absPos));
 			}
 		});
 
-		return result[0];
+		return result.get();
 	}
+
 
 	private void walkThroughAllFigureCells(Pair newPosition, BiConsumer<Pair, Pair> payload) {
 		for (int row = 0; row < state.figure.length; row++) {

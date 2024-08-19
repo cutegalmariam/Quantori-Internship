@@ -5,6 +5,8 @@ import static org.junit.Assert.*;
 import org.junit.Before;
 import org.junit.Test;
 
+import java.util.Arrays;
+
 public class TetrisTests {
 
 	private TetrisModel model;
@@ -69,10 +71,21 @@ public class TetrisTests {
 	
 	@Test
 	public void testPasteFigure() throws Exception {
+		model.state.figure = new int[][] {
+				{1, 1},
+				{1, 1}
+		};
+		model.state.position = new Pair(model.size().x()/2 - 1, 0);
+
+		for (int i = 0; i < model.state.field.length; i++) {
+			Arrays.fill(model.state.field[i], 0);
+		}
+
 		model.pasteFigure();
-		assertEquals(1, model.state.field[0][model.size().x()/2-1]);
+
+		assertEquals(1, model.state.field[0][model.size().x()/2 - 1]);
 		assertEquals(1, model.state.field[0][model.size().x()/2]);
-		assertEquals(1, model.state.field[1][model.size().x()/2-1]);
+		assertEquals(1, model.state.field[1][model.size().x()/2 - 1]);
 		assertEquals(1, model.state.field[1][model.size().x()/2]);
 	}
 	
@@ -89,7 +102,13 @@ public class TetrisTests {
 		model.moveRight();
 		assertEquals(oldPos.x() + 1, model.state.position.x());
 	}
-	
+
+	@Test
+	public void testDrop() throws Exception {
+		var oldPos = model.state.position;
+		model.drop();
+		assertEquals(oldPos.y() + 1, model.state.position.y());
+	}
 	
 	
 	
