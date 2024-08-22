@@ -118,9 +118,15 @@ public class TetrisModel implements GameEventsListener {
 				}
 			}
 			if(isFull){
-				for (int j = 0; j < state.field[i].length; j++) {
-					state.field[i][j] = 0;
+				for (int k = i; k > 0; k--) {
+					for (int j = 0; j < state.field[k].length; j++) {
+						state.field[k][j] = state.field[k-1][j];
+					}
 				}
+				for (int j = 0; j < state.field[0].length; j++) {
+					state.field[0][j] = 0;
+				}
+				i--;
 			}
 		}
 		notifyListeners();

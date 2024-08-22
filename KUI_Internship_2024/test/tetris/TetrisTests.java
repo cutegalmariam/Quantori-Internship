@@ -113,7 +113,7 @@ public class TetrisTests {
 	@Test
 	public void testFullRowRemoval(){
 		model.state.field = new int[][] {
-				{1, 1},
+				{3, 0},
 				{1, 1}
 		};
 
@@ -121,7 +121,7 @@ public class TetrisTests {
 
 		assertEquals(0, model.state.field[0][0]);
 		assertEquals(0, model.state.field[0][1]);
-		assertEquals(0, model.state.field[1][0]);
+		assertEquals(3, model.state.field[1][0]);
 		assertEquals(0, model.state.field[1][1]);
 	}
 
