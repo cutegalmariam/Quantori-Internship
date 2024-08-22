@@ -107,6 +107,25 @@ public class TetrisModel implements GameEventsListener {
 
 	}
 
+	@Override
+	public void fullRowRemoval() {
+		for (int i = 0; i < state.field.length; i++) {
+			boolean isFull = true;
+			for (int j = 0; j < state.field[i].length; j++) {
+				if (state.field[i][j] == 0){
+					isFull = false;
+					break;
+				}
+			}
+			if(isFull){
+				for (int j = 0; j < state.field[i].length; j++) {
+					state.field[i][j] = 0;
+				}
+			}
+		}
+		notifyListeners();
+	}
+
 	public boolean isNewFiguresPositionValid(Pair newPosition) {
 		AtomicBoolean result = new AtomicBoolean(true);
 

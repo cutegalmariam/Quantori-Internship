@@ -109,6 +109,22 @@ public class TetrisTests {
 		model.drop();
 		assertEquals(oldPos.y() + 1, model.state.position.y());
 	}
+
+	@Test
+	public void testFullRowRemoval(){
+		model.state.field = new int[][] {
+				{1, 1},
+				{1, 1}
+		};
+
+		model.fullRowRemoval();
+
+		assertEquals(0, model.state.field[0][0]);
+		assertEquals(0, model.state.field[0][1]);
+		assertEquals(0, model.state.field[1][0]);
+		assertEquals(0, model.state.field[1][1]);
+	}
+
 	
 	
 	
