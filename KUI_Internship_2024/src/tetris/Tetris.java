@@ -9,9 +9,7 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
 
-import javax.swing.JFrame;
-import javax.swing.JPanel;
-import javax.swing.WindowConstants;
+import javax.swing.*;
 
 public class Tetris {
 
@@ -44,6 +42,7 @@ public class Tetris {
 			public void drawBoxAt(int i, int j, int value) {
 				graphics.setColor(COLORS[value]);
 				graphics.fillRect(i, j, View.BOX_SIZE, View.BOX_SIZE);
+
 			}
 
 		});
@@ -79,7 +78,7 @@ public class Tetris {
 		});
 
 		ScheduledExecutorService service = Executors.newSingleThreadScheduledExecutor();
-		service.scheduleAtFixedRate(controller::slideDown, 0, 1, TimeUnit.SECONDS);
+		service.scheduleAtFixedRate(controller::slideDown, 0, TetrisModel.SPEED, TimeUnit.MILLISECONDS);
 
 	}
 

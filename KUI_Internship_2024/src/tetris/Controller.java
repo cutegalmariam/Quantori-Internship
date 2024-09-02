@@ -41,4 +41,14 @@ public class Controller implements ModelListener, GameEventsListener {
 		model.drop();
 	}
 
+	@Override
+	public void fullRowRemoval() {
+		model.fullRowRemoval();
+	}
+
+	@Override
+	public void gameOver(){
+		model.gameOver();
+	}
+
 }

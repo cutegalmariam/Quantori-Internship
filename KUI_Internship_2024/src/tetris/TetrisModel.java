@@ -1,5 +1,6 @@
 package tetris;
 
+import javax.swing.*;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicBoolean;
@@ -10,6 +11,14 @@ public class TetrisModel implements GameEventsListener {
 	public static final int DEFAULT_HEIGHT = 20;
 	public static final int DEFAULT_WIDTH = 10;
 	public static final int DEFAULT_COLORS_NUMBER = 7;
+
+	public static int LEVEL = 0;
+	public static int TOTAL_ROWS_CLEARED = 0;
+	public static int CURRENT_ROWS_CLEARED = 0;
+
+	public static int SPEED = 1000;
+
+	public static int SCORE = 0;
 
 	int maxColors;
 	public TetrisState state = new TetrisState();
@@ -31,7 +40,7 @@ public class TetrisModel implements GameEventsListener {
 		initFigure();
 	}
 
-	private void initFigure() {
+	public void initFigure() {
 		state.figure = FigureFactory.createNextFigure();
 		state.position = new Pair(state.width / 2 - 2, 0);
 	}
@@ -60,9 +69,9 @@ public class TetrisModel implements GameEventsListener {
 		listeners.forEach(listener -> listener.onChange(this));
 	}
 
-	private void gameOver() {
-		// TODO Auto-generated method stub
-
+	@Override
+	public void gameOver() {
+		System.out.println("Game Over");
 	}
 
 	@Override
@@ -127,10 +136,53 @@ public class TetrisModel implements GameEventsListener {
 					state.field[0][j] = 0;
 				}
 				i--;
+				TOTAL_ROWS_CLEARED += 1;
+				CURRENT_ROWS_CLEARED += 1;
+				int currentLevel = checkForLevel();
+				System.out.println(LEVEL);
+				System.out.println(SCORE);
+				assesScore(CURRENT_ROWS_CLEARED, currentLevel);
+				CURRENT_ROWS_CLEARED = 0;
+				System.out.println(SCORE);
 			}
 		}
 		notifyListeners();
 	}
+
+	public void assesScore(int CURRENT_ROWS_CLEARED, int currentLevel){
+		switch (CURRENT_ROWS_CLEARED){
+			case 1:
+				SCORE += 40 * (currentLevel + 1);
+				break;
+			case 2:
+				SCORE += 100 * (currentLevel + 1);
+				break;
+			case 3:
+				SCORE += 300 * (currentLevel + 1);
+				break;
+			case 4:
+				SCORE += 1200 * (currentLevel + 1);
+				break;
+			default:
+				System.out.println("Score is unchanged");
+		}
+	}
+
+	public int checkForLevel() {
+		int speedIncrease = 200;
+		if(TOTAL_ROWS_CLEARED == 2){
+			LEVEL += 1;
+			TOTAL_ROWS_CLEARED = 0;
+//			SPEED -= speedIncrease;
+//			System.out.println(SPEED);
+		}
+		return LEVEL;
+	}
+
+//	public int getSpeed(){
+//		System.out.println("ZXC");
+//		return SPEED;
+//	}
 
 	public boolean isNewFiguresPositionValid(Pair newPosition) {
 		AtomicBoolean result = new AtomicBoolean(true);
