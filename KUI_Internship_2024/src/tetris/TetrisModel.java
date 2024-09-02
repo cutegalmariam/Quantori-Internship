@@ -166,24 +166,39 @@ public class TetrisModel implements GameEventsListener {
 			default:
 				System.out.println("Score is unchanged");
 		}
+
+		adjustSpeed();
 	}
 
 	public int checkForLevel() {
-		int speedIncrease = 200;
 		if(TOTAL_ROWS_CLEARED == 2){
 			LEVEL += 1;
 			TOTAL_ROWS_CLEARED = 0;
-//			SPEED -= speedIncrease;
-//			System.out.println(SPEED);
+
 		}
 		return LEVEL;
 	}
 
-//	public int getSpeed(){
-//		System.out.println("ZXC");
-//		return SPEED;
-//	}
+	public void adjustSpeed(){
+		int newSpeed;
 
+		if (SCORE >= 5000) {
+			newSpeed = 100; // Maximum speed
+		} else if (SCORE >= 2000) {
+			newSpeed = 200;
+		} else if (SCORE >= 1000) {
+			newSpeed = 300;
+		} else if (SCORE >= 500) {
+			newSpeed = 500;
+		} else {
+			newSpeed = 1000; // Initial speed
+		}
+
+		if (newSpeed != SPEED) {
+			SPEED = newSpeed;
+		}
+		System.out.println("speed: "+ newSpeed);
+	}
 	public boolean isNewFiguresPositionValid(Pair newPosition) {
 		AtomicBoolean result = new AtomicBoolean(true);
 

@@ -7,6 +7,7 @@ import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.ScheduledFuture;
 import java.util.concurrent.TimeUnit;
 
 import javax.swing.*;
@@ -15,6 +16,10 @@ public class Tetris {
 
 	static final Color[] COLORS = { Color.BLACK, Color.BLUE, Color.RED, Color.GREEN, Color.CYAN, Color.MAGENTA,
 			Color.ORANGE, Color.YELLOW };
+
+	private static ScheduledExecutorService service;
+	private static ScheduledFuture<?> slideDownTask;
+	private static int currentSpeed;
 
 	public static void main(String[] args) {
 
@@ -42,7 +47,6 @@ public class Tetris {
 			public void drawBoxAt(int i, int j, int value) {
 				graphics.setColor(COLORS[value]);
 				graphics.fillRect(i, j, View.BOX_SIZE, View.BOX_SIZE);
-
 			}
 
 		});
@@ -63,12 +67,12 @@ public class Tetris {
 						controller.fullRowRemoval();
 						break;
 					}
-					case KeyEvent.VK_UP:{
+					case KeyEvent.VK_UP: {
 						controller.rotate();
 						controller.fullRowRemoval();
 						break;
 					}
-					case KeyEvent.VK_DOWN:{
+					case KeyEvent.VK_DOWN: {
 						controller.drop();
 						controller.fullRowRemoval();
 						break;
@@ -77,9 +81,23 @@ public class Tetris {
 			}
 		});
 
-		ScheduledExecutorService service = Executors.newSingleThreadScheduledExecutor();
-		service.scheduleAtFixedRate(controller::slideDown, 0, TetrisModel.SPEED, TimeUnit.MILLISECONDS);
+		service = Executors.newSingleThreadScheduledExecutor();
+		currentSpeed = TetrisModel.SPEED;
+		scheduleSlideDown(controller, currentSpeed);
 
 	}
 
+	private static void scheduleSlideDown(Controller controller, int speed) {
+		if (slideDownTask != null && !slideDownTask.isCancelled()) {
+			slideDownTask.cancel(false);
+		}
+		slideDownTask = service.scheduleAtFixedRate(controller::slideDown, 0, speed, TimeUnit.MILLISECONDS);
+	}
+
+	public static void adjustSpeed(Controller controller, int newSpeed) {
+		if (newSpeed != currentSpeed) {
+			currentSpeed = newSpeed;
+			scheduleSlideDown(controller, newSpeed);
+		}
+	}
 }
