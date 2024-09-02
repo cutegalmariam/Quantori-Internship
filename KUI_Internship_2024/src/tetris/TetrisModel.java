@@ -1,6 +1,5 @@
 package tetris;
 
-import javax.swing.*;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicBoolean;
@@ -141,7 +140,7 @@ public class TetrisModel implements GameEventsListener {
 				int currentLevel = checkForLevel();
 				System.out.println(LEVEL);
 				System.out.println(SCORE);
-				assesScore(CURRENT_ROWS_CLEARED, currentLevel);
+				assessScore(CURRENT_ROWS_CLEARED, currentLevel);
 				CURRENT_ROWS_CLEARED = 0;
 				System.out.println(SCORE);
 			}
@@ -149,7 +148,7 @@ public class TetrisModel implements GameEventsListener {
 		notifyListeners();
 	}
 
-	public void assesScore(int CURRENT_ROWS_CLEARED, int currentLevel){
+	public void assessScore(int CURRENT_ROWS_CLEARED, int currentLevel){
 		switch (CURRENT_ROWS_CLEARED){
 			case 1:
 				SCORE += 40 * (currentLevel + 1);
@@ -191,7 +190,7 @@ public class TetrisModel implements GameEventsListener {
 		} else if (SCORE >= 500) {
 			newSpeed = 500;
 		} else {
-			newSpeed = 1000; // Initial speed
+			newSpeed = SPEED; // Initial speed
 		}
 
 		if (newSpeed != SPEED) {
