@@ -7,7 +7,6 @@ public class Controller implements ModelListener, GameEventsListener {
 
 	public Controller(TetrisModel model, View view) {
 		this.model = model;
-		model.addListener(this);
 		this.view = view;
 	}
 
@@ -19,6 +18,7 @@ public class Controller implements ModelListener, GameEventsListener {
 	@Override
 	public void slideDown() {
 		model.slideDown();
+		view.draw(model);
 	}
 
 	@Override

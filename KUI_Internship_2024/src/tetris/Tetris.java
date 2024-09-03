@@ -1,16 +1,13 @@
 package tetris;
 
-import java.awt.Color;
-import java.awt.Dimension;
-import java.awt.Graphics2D;
+import javax.swing.*;
+import java.awt.*;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.ScheduledFuture;
 import java.util.concurrent.TimeUnit;
-
-import javax.swing.*;
 
 public class Tetris {
 
@@ -24,33 +21,46 @@ public class Tetris {
 	public static void main(String[] args) {
 
 		JFrame frame = new JFrame("Tetris");
-
-		JPanel panel = new JPanel();
-		panel.setPreferredSize(new Dimension(400, 700));
-
-		frame.add(panel);
-
-		frame.pack();
-
-		frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
-
-		frame.setVisible(true);
-
-		Graphics2D graphics = (Graphics2D) panel.getGraphics();
-
 		TetrisModel model = new TetrisModel(TetrisModel.DEFAULT_WIDTH, TetrisModel.DEFAULT_HEIGHT,
 				TetrisModel.DEFAULT_COLORS_NUMBER);
 
-		View view = new View(new Graphics() {
+		TetrisPanel gamePanel = new TetrisPanel(model);
 
-			@Override
-			public void drawBoxAt(int i, int j, int value) {
-				graphics.setColor(COLORS[value]);
-				graphics.fillRect(i, j, View.BOX_SIZE, View.BOX_SIZE);
-			}
+		JPanel sidePanel = new JPanel(new GridBagLayout());
+		sidePanel.setPreferredSize(new Dimension(150, 700)); // Increase width if needed
 
+		GridBagConstraints gbc = new GridBagConstraints();
+		gbc.gridx = 0;
+		gbc.gridy = 0;
+		gbc.insets = new Insets(10, 10, 10, 40); // Add padding around components
+		gbc.anchor = GridBagConstraints.WEST;
+
+		JLabel scoreLabel = new JLabel("Score: " + TetrisModel.SCORE);
+		JLabel levelLabel = new JLabel("Level: " + TetrisModel.LEVEL);
+		scoreLabel.setFont(new Font("Arial", Font.BOLD, 20));
+		levelLabel.setFont(new Font("Arial", Font.BOLD, 20));
+
+		sidePanel.add(scoreLabel, gbc);
+
+		gbc.gridy = 1; // Move to next row
+		sidePanel.add(levelLabel, gbc);
+
+		frame.setLayout(new BorderLayout());
+		frame.add(gamePanel, BorderLayout.CENTER);
+		frame.add(sidePanel, BorderLayout.EAST);
+
+		frame.pack();
+		frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
+		frame.setVisible(true);
+
+		// Example of updating score and level
+		model.addListener(updatedModel -> {
+			scoreLabel.setText("Score: " + TetrisModel.SCORE);
+			levelLabel.setText("Level: " + TetrisModel.LEVEL);
+			gamePanel.repaint();  // Trigger a repaint to update the game panel
 		});
 
+		View view = new View();
 		Controller controller = new Controller(model, view);
 
 		frame.addKeyListener(new KeyAdapter() {
@@ -84,7 +94,6 @@ public class Tetris {
 		service = Executors.newSingleThreadScheduledExecutor();
 		currentSpeed = TetrisModel.SPEED;
 		scheduleSlideDown(controller, currentSpeed);
-
 	}
 
 	private static void scheduleSlideDown(Controller controller, int speed) {
